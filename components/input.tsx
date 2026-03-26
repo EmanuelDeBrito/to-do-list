@@ -19,7 +19,7 @@ export const Input = ({ placeholder, value, onChangeText }: Props) => {
 }
 
 const styles = StyleSheet.create({
-    input:{
+    input: {
         flex: 1,
         paddingHorizontal: 10,
         paddingVertical: 15,
