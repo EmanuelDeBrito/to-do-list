@@ -1,25 +1,31 @@
-import { SafeAreaView, View, StyleSheet } from "react-native"
+import { SafeAreaView, View, FlatList, StyleSheet } from "react-native"
 import { StatusBar } from "expo-status-bar"
 import { Input } from "../components/input"
 import { Button } from "../components/button"
 import { useState } from "react"
+import { TaskType } from "../types/task-type"
+import { TaskItem } from "../components/task-item"
 
 const Screen = () => {
+    const [tasksList, setTaksList] = useState<TaskType[]>([])
     const [task, setTask] = useState("")
 
-    const handleAddTask = () => {
-
+    const handleAddTask = (taskName: string) => {
+        if(taskName){
+            setTaksList([...tasksList, { id: tasksList.length + 1, taskName, done: false }])
+            setTask('')
+        }
     }
 
     return(
         <>
-            <SafeAreaView style={{ flex: 0, backgroundColor: '#FFF' }} />
+            <SafeAreaView style={styles.statusBar} />
                 
-            <View style={styles.cotainer}>
+            <View style={styles.container}>
                 <StatusBar
                     style={"dark"}
                     translucent={false}
-                    backgroundColor="red"
+                    backgroundColor="#FFF"
                 />
                 <View style={styles.formArea}>
                     <Input 
@@ -29,20 +35,31 @@ const Screen = () => {
                     />
                     <Button 
                         label="Add"
-                        onPress={handleAddTask}
+                        onPress={() => handleAddTask(task)}
                     />
                 </View>
+                <FlatList
+                    data={tasksList}
+                    renderItem={({ item }) => (
+                        <TaskItem 
+                            id={item.id}
+                            taskName={item.taskName}
+                            done={item.done}
+                        />
+                    )}
+                    keyExtractor={item => item.id.toString()}
+                />
             </View>
         </>
-        
     )
 }
 
 const styles = StyleSheet.create({
-    safeArea: {
-        flex: 1,
+    statusBar: {
+        flex: 0,
+        backgroundColor: '#FFF'
     },
-    cotainer: {
+    container: {
         flex: 1,
         padding: 20,
         backgroundColor: '#FFF'
@@ -51,7 +68,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        gap: 15
+        gap: 15,
+        marginBottom: 20
     }
 })
 
