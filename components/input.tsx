@@ -13,7 +13,7 @@ export const Input = ({ placeholder, value, onChangeText }: Props) => {
             placeholder={placeholder}
             placeholderTextColor={"#777"}
             value={value}
-            onChangeText={onChangeText}
+            onChangeText={t => onChangeText(t)}
         />
     )
 }
@@ -21,9 +21,9 @@ export const Input = ({ placeholder, value, onChangeText }: Props) => {
 const styles = StyleSheet.create({
     input: {
         flex: 1,
-        paddingHorizontal: 10,
-        paddingVertical: 15,
-        backgroundColor: '#AAA',
+        padding: 20,
+        backgroundColor: '#DDD',
+        fontSize: 17,
         borderRadius: 10
     }
 })

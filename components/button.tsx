@@ -18,14 +18,12 @@ export const Button = ({ label, onPress }: Props) => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        backgroundColor: '#AAA',
+        padding: 20,
+        backgroundColor: '#DDD',
         borderRadius: 10
     },
     inputLabel: {
         color: '#000',
-        fontSize: 17,
-        fontWeight: '500'
+        fontSize: 17
     }
 })
