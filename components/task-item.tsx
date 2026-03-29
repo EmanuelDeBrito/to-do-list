@@ -1,6 +1,5 @@
 import { View, Text, Pressable, StyleSheet } from "react-native"
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, SlideInLeft, SlideOutRight } from "react-native-reanimated"
-import { TaskType } from "../types/task-type"
 
 type Props = {
     id: number,
