@@ -10,10 +10,24 @@ const Screen = () => {
     const [tasksList, setTaksList] = useState<TaskType[]>([])
     const [task, setTask] = useState("")
 
+    const onDone = (id: number) => {
+        let taskIndex = tasksList.findIndex(item => item.id === id)
+
+        if(taskIndex !== -1){
+            let cloneList = [...tasksList]
+            cloneList[taskIndex].done = !cloneList[taskIndex].done
+            setTaksList(cloneList)
+        }
+
+        console.log(tasksList[taskIndex])
+    }
+
     const handleAddTask = (taskName: string) => {
         if(taskName){
             setTaksList([...tasksList, { id: tasksList.length + 1, taskName, done: false }])
             setTask('')
+        }else{
+            alert('Você precisa digitar algo')
         }
     }
 
@@ -45,6 +59,7 @@ const Screen = () => {
                             id={item.id}
                             taskName={item.taskName}
                             done={item.done}
+                            onDone={onDone}
                         />
                     )}
                     keyExtractor={item => item.id.toString()}
@@ -61,7 +76,6 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        padding: 20,
         backgroundColor: '#FFF'
     },
     formArea: {
@@ -69,7 +83,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         gap: 15,
-        marginBottom: 20
+        padding: 20
     }
 })
 

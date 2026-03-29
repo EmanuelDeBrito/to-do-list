@@ -1,21 +1,54 @@
 import { View, Text, Pressable, StyleSheet } from "react-native"
+import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, FadeIn, FadeOut, Easing } from "react-native-reanimated"
 import { TaskType } from "../types/task-type"
 
-type Props = TaskType
+type Props = {
+    id: number,
+    taskName: string,
+    done: boolean,
+    onDone: (id: number) => void
+}
 
-export const TaskItem = ({ id, taskName, done }: Props) => {
+export const TaskItem = ({ id, taskName, done, onDone }: Props) => {
+    const elementScale = useSharedValue(1)
+    const elementOpacity = useSharedValue(1)
+
+    const animationStyles = useAnimatedStyle(() => ({
+        opacity: elementOpacity.value,
+        transform: [{ scale: elementScale.value }]
+    }))
+
+    const handleDone = () => {
+        if(done === false){
+            elementScale.value = withRepeat(
+                withTiming(1.1, { duration: 200 }), 
+                2, 
+                true
+            )
+            elementOpacity.value = withTiming(0.4)
+        }else{
+            elementOpacity.value = withTiming(1)
+        }
+        onDone(id)
+    }
+
     return(
-        <View style={styles.container}>
+        <Animated.View 
+            style={[styles.container, animationStyles]}
+            entering={FadeIn}
+            exiting={FadeOut}
+        >
             <View style={styles.left}>
                 <Pressable
                     style={done ? styles.doneTaskButton : styles.undoneTaskButton}
+                    onPress={handleDone}
                 />
                 <Text style={styles.taskNameText}>{taskName}</Text>
             </View>
             <Pressable>
                 <Text style={styles.deleteTaskText}>Excluir</Text>
             </Pressable>
-        </View>
+        </Animated.View>
     )
 }
 
@@ -25,6 +58,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: 25,
+        marginHorizontal: 20,
         marginBottom: 20,
         backgroundColor: '#DDD',
         borderRadius: 10
