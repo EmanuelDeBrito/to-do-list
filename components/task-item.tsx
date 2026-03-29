@@ -1,15 +1,16 @@
 import { View, Text, Pressable, StyleSheet } from "react-native"
-import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, FadeIn, FadeOut, Easing } from "react-native-reanimated"
+import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, SlideInLeft, SlideOutRight } from "react-native-reanimated"
 import { TaskType } from "../types/task-type"
 
 type Props = {
     id: number,
     taskName: string,
     done: boolean,
-    onDone: (id: number) => void
+    onDone: (id: number) => void,
+    onDelete: (id: number) => void
 }
 
-export const TaskItem = ({ id, taskName, done, onDone }: Props) => {
+export const TaskItem = ({ id, taskName, done, onDone, onDelete }: Props) => {
     const elementScale = useSharedValue(1)
     const elementOpacity = useSharedValue(1)
 
@@ -29,14 +30,19 @@ export const TaskItem = ({ id, taskName, done, onDone }: Props) => {
         }else{
             elementOpacity.value = withTiming(1)
         }
+
         onDone(id)
+    }
+
+    const handleDelete = () => {
+        onDelete(id)
     }
 
     return(
         <Animated.View 
             style={[styles.container, animationStyles]}
-            entering={FadeIn}
-            exiting={FadeOut}
+            entering={SlideInLeft}
+            exiting={SlideOutRight}
         >
             <View style={styles.left}>
                 <Pressable
@@ -45,7 +51,7 @@ export const TaskItem = ({ id, taskName, done, onDone }: Props) => {
                 />
                 <Text style={styles.taskNameText}>{taskName}</Text>
             </View>
-            <Pressable>
+            <Pressable onPress={handleDelete}>
                 <Text style={styles.deleteTaskText}>Excluir</Text>
             </Pressable>
         </Animated.View>

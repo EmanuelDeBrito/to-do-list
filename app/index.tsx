@@ -18,8 +18,16 @@ const Screen = () => {
             cloneList[taskIndex].done = !cloneList[taskIndex].done
             setTaksList(cloneList)
         }
+    }
 
-        console.log(tasksList[taskIndex])
+    const onDelete = (id: number) => {
+        let taskIndex = tasksList.findIndex(item => item.id === id)
+        
+        if(taskIndex !== -1){
+            let cloneList = [...tasksList]
+            cloneList.splice(taskIndex, 1)
+            setTaksList(cloneList)
+        }
     }
 
     const handleAddTask = (taskName: string) => {
@@ -60,6 +68,7 @@ const Screen = () => {
                             taskName={item.taskName}
                             done={item.done}
                             onDone={onDone}
+                            onDelete={onDelete}
                         />
                     )}
                     keyExtractor={item => item.id.toString()}
